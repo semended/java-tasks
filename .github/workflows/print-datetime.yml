@@ -1,0 +1,15 @@
+name: Print Date and Time
+
+on:
+  push:              # запуск при пуше
+  pull_request:      # запуск при PR
+  workflow_dispatch: # запуск вручную (по желанию)
+
+jobs:
+  show-time:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show current UTC time
+        run: echo "UTC: $(date -u '+%Y-%m-%d %H:%M:%S')"
+      - name: Show local runner time
+        run: echo "Local: $(date '+%Y-%m-%d %H:%M:%S %Z')"
