@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.Objects;
 
 /**
- * Domain model that describes a single task in the to-do list.
+ * Модель задачи.
  */
 public class Task {
 

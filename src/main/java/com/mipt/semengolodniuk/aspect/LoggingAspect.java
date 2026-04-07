@@ -15,14 +15,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * Aspect that logs service method execution start and finish.
+ * Аспект для логирования вызовов сервисов.
  */
 @Aspect
 @Component
 public class LoggingAspect {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggingAspect.class);
-    private static final Path LOG_FILE = Path.of("service", "service-methods.log");
+    private static final Path LOG_FILE = Path.of("service", "service.log");
 
     @Around("execution(* com.mipt.semengolodniuk.service..*(..))")
     public Object logServiceMethods(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -53,7 +53,7 @@ public class LoggingAspect {
                     StandardOpenOption.APPEND
             );
         } catch (IOException exception) {
-            LOGGER.warn("Could not write service log file", exception);
+            LOGGER.warn("Cannot write service log file", exception);
         }
     }
 }

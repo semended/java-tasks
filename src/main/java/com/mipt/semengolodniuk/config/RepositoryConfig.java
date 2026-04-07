@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration class for repository beans declared through @Bean methods.
+ * Конфигурация для stub репозитория.
  */
 @Configuration
 public class RepositoryConfig {

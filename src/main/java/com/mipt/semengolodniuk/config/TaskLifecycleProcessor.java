@@ -9,7 +9,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 /**
- * Bean post processor that logs lifecycle events for task services and repositories.
+ * Логирует создание сервисов и репозиториев.
  */
 @Component
 public class TaskLifecycleProcessor implements BeanPostProcessor {

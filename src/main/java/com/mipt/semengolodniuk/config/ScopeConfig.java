@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.annotation.RequestScope;
 
 /**
- * Configuration for beans with non-singleton scopes.
+ * Конфигурация scope-бинов.
  */
 @Configuration
 public class ScopeConfig {

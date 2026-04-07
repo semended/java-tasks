@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Repository contract for CRUD operations over tasks.
+ * Интерфейс репозитория задач.
  */
 public interface TaskRepository {
 

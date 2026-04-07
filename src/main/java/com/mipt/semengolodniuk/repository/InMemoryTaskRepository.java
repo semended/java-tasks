@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 /**
- * Main repository implementation that stores tasks in memory.
+ * Основной репозиторий задач в памяти.
  */
 @Repository
 @Primary

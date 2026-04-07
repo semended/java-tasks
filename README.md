@@ -1,23 +1,19 @@
 # java-tasks
 
-Домашнее задание по Java и Spring Boot.
+Spring Boot homework project with a simple to-do list manager.
 
-## Что есть в проекте
+## What is inside
 
-- CRUD API для задач по адресу `/api/tasks`
-- demo endpoint'ы для scope-бинов по адресу `/api/scope`
-- два репозитория: основной `InMemoryTaskRepository` и `StubTaskRepository`
-- сервисная логика с `@PostConstruct` и `@PreDestroy`
-- `BeanPostProcessor` для логирования жизненного цикла бинов
-- аспект с `@Around` для логирования вызовов сервисов
-- конфигурация через `application.yaml` и профили `dev`, `prod`, `test`
-- request/prototype scoped бины
-- интеграционные тесты для всех endpoint'ов
+- CRUD API for tasks at `/api/tasks`
+- statistics endpoint at `/api/statistics`
+- scope demo endpoints at `/api/scope`
+- `InMemoryTaskRepository` and `StubTaskRepository`
+- `@PostConstruct`, `@PreDestroy`, `BeanPostProcessor`, and AOP logging
+- config in `application.yaml` with `dev`, `prod`, and `test` profiles
+- integration tests for TaskController
 
-## Запуск
+## Run
 
 ```bash
 mvn spring-boot:run
 ```
-
-По умолчанию приложение стартует на порту `8081`.

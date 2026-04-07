@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * Bean with request scope to show that each HTTP request receives its own instance.
+ * Бин со scope request.
  */
 public class RequestScopedBean {
 
