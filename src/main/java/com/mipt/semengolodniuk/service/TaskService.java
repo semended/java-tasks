@@ -14,31 +14,23 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
- * Service layer that handles task CRUD operations and local cache management.
+ * Service for working with tasks.
  */
 @Service
 public class TaskService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskService.class);
-    private static final Path STATS_FILE = Path.of("service", "task-cache-statistics.txt");
+    private static final Path STATS_FILE = Path.of("task-cache-stats.txt");
 
     private final TaskRepository taskRepository;
     private final ObjectProvider<PrototypeScopedBean> prototypeScopedBeanProvider;
     private final Map<String, Task> taskCache = new LinkedHashMap<>();
-
-    @Value("${app.name}")
-    private String applicationName;
-
-    @Value("${app.version}")
-    private String applicationVersion;
 
     public TaskService(TaskRepository taskRepository,
                        ObjectProvider<PrototypeScopedBean> prototypeScopedBeanProvider) {
@@ -49,45 +41,34 @@ public class TaskService {
     @PostConstruct
     public void initCache() {
         if (taskRepository.findAll().isEmpty()) {
-            taskRepository.save(new Task("init-1", "Prepare Spring skeleton", "Create basic project structure", false));
-            taskRepository.save(new Task("init-2", "Write controller tests", "Cover CRUD endpoints with tests", false));
+            taskRepository.save(new Task("init-1", "Finish first homework", "Prepare Spring project", false));
+            taskRepository.save(new Task("init-2", "Check tests", "Make sure all endpoints work", false));
         }
 
         taskCache.clear();
         taskRepository.findAll().forEach(task -> taskCache.put(task.getId(), task));
-
-        LOGGER.info("Task cache initialized for {} {} with {} task(s)",
-                applicationName,
-                applicationVersion,
-                taskCache.size());
+        LOGGER.info("Task cache initialized: {}", taskCache.size());
     }
 
     @PreDestroy
     public void cleanup() {
-        LOGGER.info("TaskService is shutting down. Cached task count: {}", taskCache.size());
+        LOGGER.info("TaskService destroy. Cache size: {}", taskCache.size());
 
         try {
-            Files.createDirectories(STATS_FILE.getParent());
             Files.writeString(
                     STATS_FILE,
-                    LocalDateTime.now() + " | cached tasks before destroy: " + taskCache.size() + System.lineSeparator(),
+                    LocalDateTime.now() + " cacheSize=" + taskCache.size() + System.lineSeparator(),
                     StandardCharsets.UTF_8,
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND
             );
         } catch (IOException exception) {
-            LOGGER.warn("Could not write cache statistics file", exception);
+            LOGGER.warn("Cannot write cache stats file", exception);
         }
     }
 
-    public List<Task> getAllTasks(Boolean completed) {
-        List<Task> tasks = taskRepository.findAll();
-        if (completed == null) {
-            return tasks;
-        }
-        return tasks.stream()
-                .filter(task -> task.isCompleted() == completed)
-                .collect(Collectors.toList());
+    public List<Task> getAllTasks() {
+        return taskRepository.findAll();
     }
 
     public Task getTaskById(String id) {

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Stub repository with predefined data for DI demonstration.
+ * Заглушка репозитория с фиксированными задачами.
  */
 public class StubTaskRepository implements TaskRepository {
 

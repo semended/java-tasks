@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Controller for demonstrating request and prototype bean scopes.
+ * Контроллер для демонстрации scope-бинов.
  */
 @RestController
 @RequestMapping("/api/scope")

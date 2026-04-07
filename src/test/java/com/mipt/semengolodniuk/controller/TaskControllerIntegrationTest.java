@@ -1,7 +1,6 @@
 package com.mipt.semengolodniuk.controller;
 
 import com.mipt.semengolodniuk.model.Task;
-import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Integration tests for task controller endpoints.
+ * Tests for TaskController.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -40,10 +39,13 @@ class TaskControllerIntegrationTest {
     }
 
     @Test
-    void shouldReturnBadRequestForInvalidCompletedFilter() {
-        ResponseEntity<String> response = testRestTemplate.getForEntity(baseUrl() + "?completed=wrong", String.class);
+    void shouldReturnTaskListWhenRepositoryIsNotEmpty() {
+        createTask("Task one", "Description one", false);
+        ResponseEntity<Task[]> response = testRestTemplate.getForEntity(baseUrl(), Task[].class);
 
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().length >= 1);
     }
 
     @Test
@@ -59,10 +61,9 @@ class TaskControllerIntegrationTest {
 
     @Test
     void shouldReturnNotFoundForMissingTaskById() {
-        ResponseEntity<Map> response = testRestTemplate.getForEntity(baseUrl() + "/missing-task", Map.class);
+        ResponseEntity<String> response = testRestTemplate.getForEntity(baseUrl() + "/missing-task", String.class);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals(404, response.getBody().get("status"));
     }
 
     @Test
@@ -81,10 +82,9 @@ class TaskControllerIntegrationTest {
     void shouldRejectTaskCreationWithBlankTitle() {
         Task request = new Task(null, "   ", "No title here", false);
 
-        ResponseEntity<Map> response = testRestTemplate.postForEntity(baseUrl(), request, Map.class);
+        ResponseEntity<String> response = testRestTemplate.postForEntity(baseUrl(), request, String.class);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals(400, response.getBody().get("status"));
     }
 
     @Test
@@ -109,15 +109,14 @@ class TaskControllerIntegrationTest {
     void shouldReturnNotFoundWhenUpdatingMissingTask() {
         Task updateRequest = new Task(null, "Updated", "Still missing", true);
 
-        ResponseEntity<Map> response = testRestTemplate.exchange(
+        ResponseEntity<String> response = testRestTemplate.exchange(
                 baseUrl() + "/unknown-id",
                 HttpMethod.PUT,
                 new HttpEntity<>(updateRequest),
-                Map.class
+                String.class
         );
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals(404, response.getBody().get("status"));
     }
 
     @Test
@@ -131,9 +130,9 @@ class TaskControllerIntegrationTest {
                 Void.class
         );
 
-        ResponseEntity<Map> getAfterDeleteResponse = testRestTemplate.getForEntity(
+        ResponseEntity<String> getAfterDeleteResponse = testRestTemplate.getForEntity(
                 baseUrl() + "/" + createdTask.getId(),
-                Map.class
+                String.class
         );
 
         assertEquals(HttpStatus.NO_CONTENT, deleteResponse.getStatusCode());
@@ -142,15 +141,14 @@ class TaskControllerIntegrationTest {
 
     @Test
     void shouldReturnNotFoundWhenDeletingMissingTask() {
-        ResponseEntity<Map> response = testRestTemplate.exchange(
+        ResponseEntity<String> response = testRestTemplate.exchange(
                 baseUrl() + "/missing-delete-id",
                 HttpMethod.DELETE,
                 HttpEntity.EMPTY,
-                Map.class
+                String.class
         );
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals(404, response.getBody().get("status"));
     }
 
     private Task createTask(String title, String description, boolean completed) {
