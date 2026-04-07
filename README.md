@@ -5,6 +5,7 @@
 ## Что есть в проекте
 
 - CRUD API для задач по адресу `/api/tasks`
+- demo endpoint'ы для scope-бинов по адресу `/api/scope`
 - два репозитория: основной `InMemoryTaskRepository` и `StubTaskRepository`
 - сервисная логика с `@PostConstruct` и `@PreDestroy`
 - `BeanPostProcessor` для логирования жизненного цикла бинов
