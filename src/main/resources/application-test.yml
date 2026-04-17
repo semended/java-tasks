@@ -1,0 +1,3 @@
+app:
+  attachments:
+    dir: ./test-attachments
