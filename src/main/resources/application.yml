@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+app:
+  jwt:
+    secret: "my-super-secret-key-for-jwt-signing-at-least-256-bits-long!!"
+    expiration-ms: 1800000
+  pepper: "mipt-pepper-2026"
+  external:
+    base-url: http://localhost:8080/external/v1
+
+resilience4j:
+  ratelimiter:
+    instances:
+      taskGateway:
+        limit-for-period: 10
+        limit-refresh-period: 1s
+        timeout-duration: 0s
+  circuitbreaker:
+    instances:
+      taskGateway:
+        sliding-window-size: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+        ignore-exceptions:
+          - ru.mipt.gateway.exception.TaskNotFoundException
+
+logging:
+  level:
+    ru.mipt.gateway: DEBUG
