@@ -1,0 +1,12 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: to-do-list-manager
+  profiles:
+    active: dev
+
+app:
+  name: To-Do List Manager
+  version: 1.0.0
