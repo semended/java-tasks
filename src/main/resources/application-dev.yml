@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/todolist
+    username: todo_user
+    password: todo_pass
+  jpa:
+    show-sql: true
+
+logging:
+  level:
+    ru.mipt.todo: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG

@@ -1,15 +1,15 @@
-# IntelliJ IDEA
+target/
+*.class
+*.jar
+*.war
 .idea/
 *.iml
-out/
-
-# Maven
-target/
-dependency-reduced-pom.xml
-
-# Logs
+.settings/
+.project
+.classpath
+.gradle/
+build/
+attachments/
+test-attachments/
 *.log
-
-# OS junk
 .DS_Store
-Thumbs.db

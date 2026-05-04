@@ -1,3 +1,1 @@
-# java-tasks
-Репозиторий для дз по джаве от мтса
-# test update
+# MIPT Java Semester 2
